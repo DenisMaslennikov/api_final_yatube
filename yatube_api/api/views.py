@@ -5,23 +5,28 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import (
     AllowAny,
     IsAuthenticated,
-    IsAuthenticatedOrReadOnly
+    IsAuthenticatedOrReadOnly,
 )
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.viewsets import (
+    GenericViewSet,
+    ModelViewSet,
+    ReadOnlyModelViewSet,
+)
 
 from posts.models import Follow, Group, Post
 
-from .exceptions import FollowError
 from .permissions import AuthorOrReadOnly
 from .serializers import (
     CommentSerializer,
     FollowSerializer,
     GroupSerializer,
-    PostSerializer
+    PostSerializer,
 )
 
 
 class PostViewSet(ModelViewSet):
+    """Апи работы с постами"""
+
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     pagination_class = LimitOffsetPagination
@@ -32,6 +37,8 @@ class PostViewSet(ModelViewSet):
 
 
 class CommentViewSet(ModelViewSet):
+    """Апи работы с комментариями"""
+
     serializer_class = CommentSerializer
     permission_classes = (AuthorOrReadOnly, IsAuthenticatedOrReadOnly)
 
@@ -47,9 +54,9 @@ class CommentViewSet(ModelViewSet):
         )
 
 
-class GroupViewSet(
-    mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet
-):
+class GroupViewSet(ReadOnlyModelViewSet):
+    """Апи просмотра групп"""
+
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (AllowAny,)
@@ -58,20 +65,15 @@ class GroupViewSet(
 class FollowViewSet(
     mixins.ListModelMixin, mixins.CreateModelMixin, GenericViewSet
 ):
+    """Апи подписок"""
+
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter,)
     search_fields = ("following__username",)
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Follow.objects.filter(user=self.request.user.pk)
+        return self.request.user.followers
 
     def perform_create(self, serializer: FollowSerializer):
-        following = serializer.validated_data.get("following")
-        if following == self.request.user:
-            raise FollowError("Нельзя подписаться на самого себя")
-        if Follow.objects.filter(
-            user=self.request.user, following=following
-        ):
-            raise FollowError("Такая подписка уже есть")
         serializer.save(user=self.request.user)

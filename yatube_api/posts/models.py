@@ -40,7 +40,7 @@ class Follow(models.Model):
         to=User,
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
-        related_name="users",
+        related_name="followers",
     )
     following = models.ForeignKey(
         to=User,
@@ -58,8 +58,6 @@ class Follow(models.Model):
 
 
 class Group(models.Model):
-    title = models.CharField(
-        verbose_name="Название группы", max_length=200
-    )
+    title = models.CharField(verbose_name="Название группы", max_length=200)
     slug = models.SlugField(verbose_name="Слаг", max_length=50)
     description = models.TextField(verbose_name="Описание")
