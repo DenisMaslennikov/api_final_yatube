@@ -49,6 +49,7 @@ python manage.py runserver
 * Получение токена авторизации
 ```http request
 POST http://127.0.0.1:8000/api/v1/jwt/create/
+
 {
   "username": "string",
   "password": "string"
@@ -63,6 +64,7 @@ POST http://127.0.0.1:8000/api/v1/jwt/create/
 * Обновление токена
 ```http request
 POST http://127.0.0.1:8000/api/v1/jwt/refresh/
+
 {
   "refresh": "string"
 }
@@ -100,6 +102,7 @@ GET http://127.0.0.1:8000/api/v1/posts/?limit=<число>&offset=<число>
 ```http request
 POST http://127.0.0.1:8000/api/v1/posts/
 Authorization: <Ваш токен>
+
 {
   "text": "string",
   "image": "string",
@@ -118,8 +121,9 @@ Authorization: <Ваш токен>
 ```
 * Обновление публикации: отправьте `PUT` или `PATCH` запрос 
 ```http request
-PUT|PATCH http://127.0.0.1:8000/api/v1/posts/<id>/
+PUT http://127.0.0.1:8000/api/v1/posts/<id>/
 Authorization: <Ваш токен>
+
 {
   "text": "string",
   "image": "string",
@@ -176,6 +180,7 @@ GET http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/
 ```http request
 POST http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/
 Authorization: <Ваш токен>
+
 {
   "text": "string"
 }
@@ -203,10 +208,11 @@ GET http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
   "post": 0
 }
 ```
-*Обновление комментария - `PUT` или `PATCH`запрос:
+* Обновление комментария - `PUT` или `PATCH`запрос:
 ```http request
-PUT|PATCH http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
+PUT http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
 Authorization: <Ваш токен>
+
 {
   "text": "string"
 }
@@ -268,6 +274,7 @@ Authorization: <Ваш токен>
 ```http request
 POST http://127.0.0.1:8000/api/v1/follow/
 Authorization: <Ваш токен>
+
 {
   "following": "username"
 }
