@@ -13,7 +13,7 @@ from rest_framework.viewsets import (
     ReadOnlyModelViewSet,
 )
 
-from posts.models import Follow, Group, Post
+from posts.models import Group, Post
 
 from .permissions import AuthorOrReadOnly
 from .serializers import (

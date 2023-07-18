@@ -118,7 +118,7 @@ Authorization: <Ваш токен>
 ```
 * Обновление публикации: отправьте `PUT` или `PATCH` запрос 
 ```http request
-PUT/PATCH http://127.0.0.1:8000/api/v1/posts/<id>/
+PUT|PATCH http://127.0.0.1:8000/api/v1/posts/<id>/
 Authorization: <Ваш токен>
 {
   "text": "string",
@@ -205,7 +205,7 @@ GET http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
 ```
 *Обновление комментария - `PUT` или `PATCH`запрос:
 ```http request
-PUT/PATCH http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
+PUT|PATCH http://127.0.0.1:8000/api/v1/posts/<post_id>/comments/<comment_id>/
 Authorization: <Ваш токен>
 {
   "text": "string"
